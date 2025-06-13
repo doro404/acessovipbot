@@ -18,7 +18,7 @@
     "vip_plans": [
         {
             "id": 1,
-            "name": "VIP Básico",
+            "name": "Planos - 3 Meses",
             "price": 0.01,
             "duration_days": 30,
             "groups": [
@@ -28,7 +28,7 @@
         },
         {
             "id": 2,
-            "name": "VIP Premium",
+            "name": "Planos - 1 Meses",
             "price": 20.0,
             "duration_days": 30,
             "groups": [
