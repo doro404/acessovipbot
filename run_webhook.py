@@ -1,5 +1,6 @@
 from webhook_handler import app
 import logging
+import os
 
 # Configuração de logging
 logging.basicConfig(
@@ -9,5 +10,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
-    logger.info("Iniciando servidor webhook na porta 5000...")
-    app.run(host='0.0.0.0', port=5000) 
+    port = int(os.environ.get("PORT", 5000))
+    logger.info(f"Iniciando servidor webhook na porta {port}...")
+    app.run(host='0.0.0.0', port=port)
