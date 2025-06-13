@@ -2,6 +2,11 @@
     "bot_token": "8102967658:AAGr3di_QyGqI56HsjTXBUZWxRoyn6lVYuQ",
     "admin_id": "6423539592",
     "admin_user": "saikathesun",
+    "server": {
+        "port": 5000,
+        "host": "0.0.0.0",
+        "secret_key": "secret!"
+    },
     "mercadopago": {
         "access_token": "seuacesstoken"
     },
