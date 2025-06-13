@@ -33,7 +33,7 @@
         },
         {
             "id": 2,
-            "name": "Planos - 1 Meses",
+            "name": "Planos - 1 Mês",
             "price": 20.0,
             "duration_days": 30,
             "groups": [
