@@ -2003,18 +2003,10 @@ async def check_bot_initialization(bot, config):
         except:
             logger.error("Não foi possível enviar mensagem de erro ao admin")
 
-def run_webhook():
-    """Inicia o servidor webhook em uma thread separada"""
-    webhook_app.run(host='0.0.0.0', port=5000)
 
 def main():
     try:
-        # Iniciar o webhook em uma thread separada
-        webhook_thread = Thread(target=run_webhook)
-        webhook_thread.daemon = True  # Thread será encerrada quando o programa principal terminar
-        webhook_thread.start()
-        logger.info("Webhook iniciado na porta 5000")
-        
+
         config = load_config()
         
         # Criar aplicação com job_queue
