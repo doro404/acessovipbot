@@ -18,16 +18,32 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Carrega a configuração dos planos VIP
+# Carrega a configuração completa
+def load_config():
+    try:
+        with open('config.json', 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            logger.info("Config carregada com sucesso")
+            return config
+    except Exception as e:
+        logger.error(f"Erro ao carregar config.json: {e}")
+        return None
+
+# Carrega apenas os planos VIP
 def load_vip_plans():
-    with open('config.json', 'r', encoding='utf-8') as f:
-        config = json.load(f)
+    config = load_config()
+    if config:
         return config.get('vip_plans', [])
+    return []
 
 # Notifica o admin sobre novo pagamento pendente
 async def notify_admin_pending_payment(order_data):
     try:
         config = load_config()
+        if not config:
+            logger.error("Não foi possível carregar a configuração")
+            return
+            
         bot_token = config['bot_token']
         admin_id = config['admin_id']
         
