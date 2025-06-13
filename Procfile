@@ -1,2 +1,1 @@
-web: python run_webhook.py
-bot: python bot.py 
+web: python main.py
