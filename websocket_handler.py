@@ -29,7 +29,8 @@ def load_vip_plans():
 async def notify_admin_pending_payment(order_data):
     try:
         config = load_config()
-        if not config: return
+        if not config:
+            return
 
         bot = Bot(token=config['bot_token'])
         message = (
@@ -56,6 +57,41 @@ def woocommerce_webhook():
         return jsonify({'message': 'Evento WebSocket enviado'}), 200
 
     return jsonify({'message': 'Status do pedido ignorado'}), 200
+
+@socketio.on('order_info')
+def handle_order_info(data):
+    order_id = data.get('order_id')
+    produtos = data.get('produtos', [])  # Lista de nomes dos produtos
+
+    logger.info(f"Pedido recebido: {order_id} - Produtos: {produtos}")
+
+    config = load_config()
+    if not config:
+        emit('order_links', {'error': 'Configuração não carregada'})
+        return
+
+    vip_plans = config.get('vip_plans', [])
+
+    matched_plans = []
+    for produto_nome in produtos:
+        for plan in vip_plans:
+            if plan['name'].lower() == produto_nome.lower():
+                matched_plans.append(plan)
+                break
+
+    if not matched_plans:
+        emit('order_links', {'error': 'Nenhum plano VIP correspondente encontrado'})
+        return
+
+    response = []
+    for plan in matched_plans:
+        response.append({
+            'plan_id': plan['id'],
+            'plan_name': plan['name'],
+            'invite_links': plan['groups']
+        })
+
+    emit('order_links', {'order_id': order_id, 'plans': response})
 
 if __name__ == '__main__':
     config = load_config()
