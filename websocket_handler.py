@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 import json
 import os
-from dotenv import load_dotenv
 import logging
 from telegram import Bot
 import asyncio
@@ -11,7 +10,6 @@ import asyncio
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins='*')  # Habilita CORS para conexões WebSocket
-load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
