@@ -66,4 +66,4 @@ if __name__ == '__main__':
         exit(1)
         
     port = config.get('server', {}).get('port', 5000)
-    socketio.run(app, host='0.0.0.0', port=port)
+    socketio.run(app, host='0.0.0.0', port=port, allow_unsafe_werkzeug=True)
