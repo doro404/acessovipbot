@@ -2,8 +2,6 @@
 
 from flask import Flask, request, jsonify
 import json
-import hmac
-import hashlib
 import os
 from dotenv import load_dotenv
 import logging
@@ -25,20 +23,6 @@ def load_vip_plans():
     with open('config.json', 'r', encoding='utf-8') as f:
         config = json.load(f)
         return config.get('vip_plans', [])
-
-# Verifica a assinatura do webhook do WooCommerce
-def verify_woocommerce_signature(payload, signature):
-    webhook_secret = os.getenv('WOOCOMMERCE_WEBHOOK_SECRET')
-    if not webhook_secret:
-        return False
-    
-    expected_signature = hmac.new(
-        webhook_secret.encode('utf-8'),
-        payload,
-        hashlib.sha256
-    ).hexdigest()
-    
-    return hmac.compare_digest(signature, expected_signature)
 
 # Notifica o admin sobre novo pagamento pendente
 async def notify_admin_pending_payment(order_data):
@@ -87,24 +71,13 @@ async def notify_admin_pending_payment(order_data):
 
 @app.route('/webhook/woocommerce', methods=['POST'])
 def woocommerce_webhook():
-    # Obtém a assinatura do cabeçalho
-    signature = request.headers.get('X-WC-Webhook-Signature')
-    if not signature:
-        return jsonify({'error': 'Assinatura não encontrada'}), 401
-
-    # Verifica a assinatura
-    if not verify_woocommerce_signature(request.get_data(), signature):
-        return jsonify({'error': 'Assinatura inválida'}), 401
-
-    # Processa o payload
     data = request.json
-    
+
     # Se for um pedido pendente, notifica o admin
     if data.get('status') == 'pending':
-        # Executa a notificação de forma assíncrona
         asyncio.run(notify_admin_pending_payment(data))
         return jsonify({'message': 'Notificação enviada ao admin'}), 200
-    
+
     # Verifica se é um pedido concluído
     if data.get('status') != 'completed':
         return jsonify({'message': 'Pedido não está concluído'}), 200
