@@ -1,0 +1,10 @@
+welcome_message=Olá! Bem-vindo ao Bot VIP. Use /start para ver os planos disponíveis.
+start_message=Escolha um dos planos VIP disponíveis:
+payment_instructions=Para pagar, escolha o método de pagamento:
+pix_automatico_instructions=Escaneie o QR Code abaixo para pagar automaticamente:
+pix_manual_instructions=Faça o pagamento para a chave PIX: {chave_pix}
+payment_success=teste
+payment_pending=Aguardando confirmação do pagamento...
+payment_error=Ocorreu um erro no pagamento. Tente novamente.
+admin_welcome=Bem-vindo ao painel administrativo.
+maintenance_message=O bot está em manutenção. Tente novamente mais tarde.

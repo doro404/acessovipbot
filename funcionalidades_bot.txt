@@ -1,0 +1,75 @@
+FUNCIONALIDADES DO BOT SaikaVIP Bot
+
+
+1. Sistema de Pagamentos
+   - Integração com MercadoPago para processamento seguro
+   - Suporte a PIX automático com geração instantânea de QR Code
+   - Suporte a PIX manual com chave personalizada
+   - Botão de contato direto com admin (@saikathesun) para envio de comprovante
+   - Link direto para chat com admin após escolha do PIX manual
+   - Notificações automáticas de pagamento
+   - Confirmação automática de recebimento
+   - Sistema de aprovação manual de pagamentos
+
+2. Planos VIP
+   - Plano Básico (R$ 0,01 por 30 dias)
+   - Plano Premium (R$ 20,00 por 30 dias)
+   - Acesso a grupos exclusivos por plano
+   - Comparativo de benefícios entre planos
+   - Histórico de planos adquiridos
+
+3. Gerenciamento de Assinaturas
+   - Verificação automática de assinaturas a cada 24h
+   - Sistema de renovação automática
+   - Controle de duração dos planos
+   - Remoção automática de usuários com assinatura expirada
+   - Notificações de expiração (7 dias, 3 dias, 1 dia)
+   - Sistema de extensão de assinatura
+
+4. Administração
+   - Modo de manutenção para atualizações
+   - Painel administrativo completo
+   - Controle de administradores
+   - Relatórios de vendas e assinaturas
+   - Gerenciamento de usuários
+   - Configurações personalizáveis
+
+5. Grupos
+   - Gerenciamento de grupos VIP
+   - Diferentes níveis de acesso por plano
+   - Sistema de convites
+   - Controle de entrada e saída
+   - Lista de grupos disponíveis por plano
+   - Backup automático de grupos
+
+6. Segurança
+   - Proteção contra fraudes
+   - Verificação de pagamentos
+   - Sistema de autenticação
+   - Bloqueio de usuários maliciosos
+   - Proteção contra spam
+   - Logs de atividades suspeitas
+
+7. Suporte
+   - Atendimento automático
+   - Resolução de problemas
+   - FAQ integrado
+   - Sistema de tickets
+   - Guia de uso do bot
+   - Suporte 24/7
+
+8. Sistema de Notificações
+   - Alertas de pagamento
+   - Lembretes de renovação
+   - Avisos de expiração
+   - Notificações de grupo
+   - Alertas administrativos
+   - Confirmações de ações
+
+9. Relatórios e Estatísticas
+   - Relatório de vendas diário
+   - Estatísticas de usuários
+   - Histórico de transações
+   - Métricas de uso
+   - Relatório de assinaturas ativas
+   - Análise de conversão 

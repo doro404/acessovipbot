@@ -1,0 +1,21 @@
+{
+    "total_users": 2,
+    "users": [
+        {
+            "id": 6423539592,
+            "username": "saikathesun",
+            "first_name": "SAIKA",
+            "last_name": null,
+            "joined_date": "2025-05-21 22:54:27"
+        },
+        {
+            "id": 8166210869,
+            "username": null,
+            "first_name": "Saika | ^~^",
+            "last_name": null,
+            "joined_date": "2025-05-22 01:02:45",
+            "is_vip": false
+        }
+    ],
+    "last_update": "2025-05-22 01:02:45"
+}

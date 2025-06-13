@@ -1,0 +1,44 @@
+{
+    "bot_token": "8102967658:AAGr3di_QyGqI56HsjTXBUZWxRoyn6lVYuQ",
+    "admin_id": "6423539592",
+    "admin_user": "saikathesun",
+    "mercadopago": {
+        "access_token": "seuacesstoken"
+    },
+    "payment_methods": {
+        "pix_automatico": {
+            "enabled": true
+        },
+        "pix_manual": {
+            "enabled": true,
+            "chave_pix": "pix123",
+            "nome_titular": "tesss"
+        }
+    },
+    "vip_plans": [
+        {
+            "id": 1,
+            "name": "VIP Básico",
+            "price": 0.01,
+            "duration_days": 30,
+            "groups": [
+                "-1002696664325",
+                "-1002429818463"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "VIP Premium",
+            "price": 20.0,
+            "duration_days": 30,
+            "groups": [
+                "ID_GRUPO_1",
+                "ID_GRUPO_2",
+                "ID_GRUPO_3"
+            ]
+        }
+    ],
+    "admin_settings": {
+        "maintenance_mode": false
+    }
+}

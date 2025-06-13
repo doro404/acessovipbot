@@ -1,0 +1,150 @@
+📱 MANUAL DO BOT SAIKA PREMIUM 📱
+
+1. COMANDOS BÁSICOS
+   /start - Inicia o bot e mostra os planos disponíveis
+   /admin - Painel administrativo (apenas para admin)
+
+2. SISTEMA DE PLANOS
+   - Plano Básico (R$ 0,01 por 30 dias)
+   - Plano Premium (R$ 20,00 por 30 dias)
+   - Planos podem ser renovados antes da expiração
+   - Dias restantes são somados na renovação
+
+2.1 CONFIGURAÇÕES DE TEMPO DOS PLANOS
+   a) Períodos Disponíveis:
+      - 7 dias
+      - 15 dias
+      - 30 dias
+      - 60 dias
+      - 90 dias
+      - 180 dias
+      - 365 dias
+      - -1 (Plano Permanente)
+
+   b) Plano Permanente (-1):
+      - Acesso vitalício ao plano
+      - Sem necessidade de renovação
+      - Manutenção de todos os benefícios
+      - Preço especial único
+      - Ideal para usuários fiéis
+
+   c) Renovação de Planos:
+      - Dias são acumulados na renovação
+      - Exemplo: 30 dias + 30 dias = 60 dias
+      - Não há perda de dias ao renovar
+      - Pode renovar a qualquer momento
+
+   d) Conversão de Planos:
+      - Pode converter plano temporário para permanente
+      - Valor proporcional é descontado
+      - Mantém benefícios durante conversão
+      - Processo automático
+
+3. MÉTODOS DE PAGAMENTO
+   a) PIX Automático:
+      - Gera QR Code instantaneamente
+      - Confirmação automática
+      - Processo totalmente automatizado
+      - Verificação a cada 5 segundos
+
+   b) PIX Manual:
+      - Chave PIX personalizada
+      - Botão direto para envio de comprovante
+      - Aprovação manual pelo admin
+      - Processo mais seguro
+
+4. FUNCIONALIDADES PARA USUÁRIOS
+   - Visualização de planos disponíveis
+   - Status da assinatura atual
+   - Notificações de expiração
+   - Acesso a grupos exclusivos
+   - Renovação de planos
+   - Histórico de assinaturas
+
+5. FUNCIONALIDADES OCULTAS
+   a) Sistema de Notificações:
+      - Alerta 7 dias antes da expiração
+      - Alerta 3 dias antes da expiração
+      - Alerta 1 dia antes da expiração
+      - Alerta quando expira
+
+   b) Sistema de Verificação:
+      - Verificação automática a cada 15 minutos
+      - Remoção automática de usuários expirados
+      - Verificação de assinaturas próximas de expirar
+      - Backup automático de grupos
+
+   c) Sistema de Segurança:
+      - Proteção contra fraudes
+      - Verificação de pagamentos duplicados
+      - Bloqueio de usuários maliciosos
+      - Logs de atividades suspeitas
+
+6. PAINEL ADMINISTRATIVO (COMANDO /admin)
+   a) Estatísticas:
+      - Total de usuários
+      - Total de VIPs
+      - Últimos usuários
+      - Histórico de transações
+
+   b) Configurações:
+      - Token do Bot
+      - Token MercadoPago
+      - Chave PIX
+      - Nome do titular PIX
+      - Ativar/Desativar PIX Automático
+      - Ativar/Desativar PIX Manual
+
+   c) Gerenciamento:
+      - Lista de usuários VIP
+      - Edição de planos
+      - Modo manutenção
+      - Broadcast de mensagens
+
+   d) Mensagens Personalizáveis:
+      - Mensagem de boas-vindas
+      - Instruções de pagamento
+      - Mensagem de sucesso
+      - Mensagem de erro
+      - Instruções do PIX
+
+7. FUNCIONALIDADES ESPECIAIS
+   a) Sistema de Grupos:
+      - Links de convite únicos
+      - Expiração automática de links
+      - Limite de uso por link
+      - Backup automático
+
+   b) Sistema de Renovação:
+      - Soma automática de dias
+      - Manutenção de benefícios
+      - Notificações de renovação
+      - Histórico de renovações
+
+   c) Sistema de Suporte:
+      - Atendimento automático
+      - FAQ integrado
+      - Sistema de tickets
+      - Suporte 24/7
+
+8. DICAS DE USO
+   - Sempre verifique o status da sua assinatura
+   - Renove antes da expiração para manter benefícios
+   - Mantenha o comprovante do pagamento
+   - Use o botão de voltar para navegar entre menus
+   - Em caso de problemas, contate o admin
+
+9. SEGURANÇA
+   - Nunca compartilhe seus dados de pagamento
+   - Use apenas os links oficiais do bot
+   - Verifique sempre o nome do titular do PIX
+   - Mantenha seu Telegram atualizado
+   - Desconfie de mensagens suspeitas
+
+10. SUPORTE
+    - Para problemas técnicos: contate o admin
+    - Para dúvidas sobre pagamento: use o botão de suporte
+    - Para reclamações: envie mensagem para o admin
+    - Para sugestões: use o comando /admin
+
+⚠️ IMPORTANTE: Este bot é protegido por direitos autorais. Qualquer tentativa de cópia ou uso não autorizado será reportada. 
