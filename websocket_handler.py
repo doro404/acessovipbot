@@ -9,7 +9,7 @@ import asyncio
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins='*')  # Habilita CORS para conexões WebSocket
+socketio = SocketIO(app, cors_allowed_origins='*', async_mode='threading')  # threading evita conflitos
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -47,12 +47,10 @@ async def notify_admin_pending_payment(order_data):
 def woocommerce_webhook():
     data = request.json
 
-    # Pedido pendente: notifica admin
     if data.get('status') == 'pending':
-        asyncio.run(notify_admin_pending_payment(data))
+        asyncio.create_task(notify_admin_pending_payment(data))
         return jsonify({'message': 'Notificação enviada ao admin'}), 200
 
-    # Pedido concluído: envia evento via WebSocket
     if data.get('status') == 'completed':
         socketio.emit('order_completed', {'order_id': data.get('id')})
         return jsonify({'message': 'Evento WebSocket enviado'}), 200
@@ -64,6 +62,6 @@ if __name__ == '__main__':
     if not config:
         logger.error("Não foi possível carregar config.json")
         exit(1)
-        
-    port = config.get('server', {}).get('port', 5000)
+
+    port = int(os.environ.get("PORT", config.get('server', {}).get('port', 5000)))
     socketio.run(app, host='0.0.0.0', port=port, allow_unsafe_werkzeug=True)
