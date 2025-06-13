@@ -2,7 +2,7 @@ import json
 import logging
 import os
 from datetime import datetime, timedelta
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes, MessageHandler, filters, JobQueue
 import qrcode
 from PIL import Image
@@ -22,6 +22,14 @@ logger = logging.getLogger(__name__)
 
 # Lock para operações no JSON
 json_lock = threading.Lock()
+
+# Variável global para a instância do bot
+_bot_instance = None
+
+def get_bot_instance():
+    """Retorna a instância global do bot"""
+    global _bot_instance
+    return _bot_instance
 
 # Carregar configurações
 def load_config():
@@ -2005,25 +2013,25 @@ async def check_bot_initialization(bot, config):
 
 
 def main():
-    try:
+    """Função principal que inicia o bot"""
+    global _bot_instance
+    
+    config = load_config()
+    if not config:
+        logger.error("Não foi possível carregar config.json")
+        return
 
-        config = load_config()
-        
-        # Criar aplicação com job_queue
-        application = (
-            Application.builder()
-            .token(config['bot_token'])
-            .concurrent_updates(False)
-            .job_queue(JobQueue())
-            .build()
-        )
-        
-        # Criar novo event loop
+    # Criar a instância do bot
+    _bot_instance = Bot(token=config['bot_token'])
+    
+    # Criar a aplicação
+    application = Application.builder().token(config['bot_token']).build()
+    
+    try:
+        # Verificar inicialização e enviar relatório ao admin
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        
-        # Verificar inicialização e enviar relatório ao admin
-        loop.run_until_complete(check_bot_initialization(application.bot, config))
+        loop.run_until_complete(check_bot_initialization(_bot_instance, config))
         
         # Adicionar job para verificação inicial (após 5 segundos)
         application.job_queue.run_once(
