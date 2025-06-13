@@ -6,9 +6,19 @@ import hmac
 import hashlib
 import os
 from dotenv import load_dotenv
+import logging
+from telegram import Bot
+import asyncio
 
 app = Flask(__name__)
 load_dotenv()
+
+# Configuração de logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 # Carrega a configuração dos planos VIP
 def load_vip_plans():
@@ -30,6 +40,51 @@ def verify_woocommerce_signature(payload, signature):
     
     return hmac.compare_digest(signature, expected_signature)
 
+# Notifica o admin sobre novo pagamento pendente
+async def notify_admin_pending_payment(order_data):
+    try:
+        config = load_config()
+        bot_token = config['bot_token']
+        admin_id = config['admin_id']
+        
+        # Extrair informações do pedido
+        order_id = order_data.get('id')
+        order_total = order_data.get('total')
+        order_status = order_data.get('status')
+        payment_method = order_data.get('payment_method_title', 'Método não especificado')
+        
+        # Extrair produtos do pedido
+        line_items = order_data.get('line_items', [])
+        products_info = []
+        for item in line_items:
+            products_info.append(f"• {item['name']} - R${float(item['total']):.2f}")
+        
+        # Criar mensagem para o admin
+        message = (
+            f"🆕 *Novo Pagamento Pendente*\n\n"
+            f"📦 *Pedido #{order_id}*\n"
+            f"💰 Total: R${float(order_total):.2f}\n"
+            f"💳 Método: {payment_method}\n"
+            f"📝 Status: {order_status.upper()}\n\n"
+            f"*Produtos:*\n" + "\n".join(products_info) + "\n\n"
+            f"👤 *Cliente:*\n"
+            f"Email: {order_data.get('billing', {}).get('email', 'Não informado')}\n"
+            f"IP: {order_data.get('customer_ip_address', 'Não informado')}\n\n"
+            f"⏰ Data: {order_data.get('date_created', 'Não informada')}"
+        )
+        
+        # Enviar mensagem usando o bot
+        bot = Bot(token=bot_token)
+        await bot.send_message(
+            chat_id=admin_id,
+            text=message,
+            parse_mode='Markdown'
+        )
+        logger.info(f"Admin notificado sobre novo pagamento pendente - Pedido #{order_id}")
+        
+    except Exception as e:
+        logger.error(f"Erro ao notificar admin sobre pagamento pendente: {e}")
+
 @app.route('/webhook/woocommerce', methods=['POST'])
 def woocommerce_webhook():
     # Obtém a assinatura do cabeçalho
@@ -43,6 +98,12 @@ def woocommerce_webhook():
 
     # Processa o payload
     data = request.json
+    
+    # Se for um pedido pendente, notifica o admin
+    if data.get('status') == 'pending':
+        # Executa a notificação de forma assíncrona
+        asyncio.run(notify_admin_pending_payment(data))
+        return jsonify({'message': 'Notificação enviada ao admin'}), 200
     
     # Verifica se é um pedido concluído
     if data.get('status') != 'completed':
