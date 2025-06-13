@@ -6,6 +6,9 @@ import os
 import logging
 from telegram import Bot
 import asyncio
+from datetime import datetime, timedelta
+import atexit
+from bot import get_bot_instance
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -13,6 +16,17 @@ socketio = SocketIO(app, cors_allowed_origins='*', async_mode='threading')  # th
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Variável global para o loop de eventos
+event_loop = None
+
+def get_event_loop():
+    """Retorna o loop de eventos reutilizável"""
+    global event_loop
+    if event_loop is None:
+        event_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(event_loop)
+    return event_loop
 
 def load_config():
     try:
@@ -32,7 +46,11 @@ async def notify_admin_pending_payment(order_data):
         if not config:
             return
 
-        bot = Bot(token=config['bot_token'])
+        bot = get_bot_instance()
+        if not bot:
+            logger.error("Não foi possível obter a instância do bot")
+            return
+
         message = (
             f"🆕 *Novo Pagamento Pendente*\n\n"
             f"📦 *Pedido #{order_data.get('id')}*\n"
@@ -43,6 +61,38 @@ async def notify_admin_pending_payment(order_data):
         await bot.send_message(chat_id=config['admin_id'], text=message, parse_mode='Markdown')
     except Exception as e:
         logger.error(f"Erro ao notificar admin: {e}")
+
+async def get_group_invite_links(group_ids):
+    """Obtém os links de convite para os grupos especificados"""
+    bot = get_bot_instance()
+    if not bot:
+        logger.error("Não foi possível obter a instância do bot")
+        return [None] * len(group_ids)
+        
+    invite_links = []
+    
+    for group_id in group_ids:
+        try:
+            # Tentar criar um novo link de convite
+            invite_link = await bot.create_chat_invite_link(
+                chat_id=group_id,
+                name=f"VIP {datetime.now().strftime('%Y%m%d')}",
+                expire_date=datetime.now() + timedelta(days=7),
+                member_limit=1,
+                creates_join_request=False
+            )
+            invite_links.append(invite_link.invite_link)
+        except Exception as e:
+            logger.error(f"Erro ao criar link de convite para grupo {group_id}: {e}")
+            try:
+                # Se falhar, tenta obter link existente
+                invite_link = await bot.export_chat_invite_link(chat_id=group_id)
+                invite_links.append(invite_link)
+            except Exception as e2:
+                logger.error(f"Erro ao obter link existente para grupo {group_id}: {e2}")
+                invite_links.append(None)
+    
+    return invite_links
 
 @app.route('/webhook/woocommerce', methods=['POST'])
 def woocommerce_webhook():
@@ -83,15 +133,31 @@ def handle_order_info(data):
         emit('order_links', {'error': 'Nenhum plano VIP correspondente encontrado'})
         return
 
+    # Usar o loop de eventos reutilizável
+    loop = get_event_loop()
+
     response = []
     for plan in matched_plans:
+        # Obter links de convite para os grupos do plano
+        invite_links = loop.run_until_complete(get_group_invite_links(plan['groups']))
+        
         response.append({
             'plan_id': plan['id'],
             'plan_name': plan['name'],
-            'invite_links': plan['groups']
+            'invite_links': invite_links
         })
 
     emit('order_links', {'order_id': order_id, 'plans': response})
+
+# Função para limpar recursos quando o servidor for encerrado
+def cleanup():
+    global event_loop
+    if event_loop:
+        event_loop.close()
+        event_loop = None
+
+# Registrar função de limpeza
+atexit.register(cleanup)
 
 if __name__ == '__main__':
     config = load_config()
