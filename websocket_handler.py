@@ -99,7 +99,9 @@ def woocommerce_webhook():
     data = request.json
 
     if data.get('status') == 'pending':
-        asyncio.create_task(notify_admin_pending_payment(data))
+        loop = get_event_loop()
+        loop.run_until_complete(notify_admin_pending_payment(data))
+
         return jsonify({'message': 'Notificação enviada ao admin'}), 200
 
     if data.get('status') == 'completed':
